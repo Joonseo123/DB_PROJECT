@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>농사일지 작성</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; margin: 20px; background-color: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #2e7d32; margin-bottom: 20px; }
+        form { background-color: #f9f9f9; padding: 20px; border-radius: 5px; }
+        label { display: block; margin-top: 15px; font-weight: bold; color: #333; }
+        input, textarea, select { width: 100%; padding: 10px; margin-top: 5px; 
+                                  border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        textarea { height: 100px; resize: vertical; }
+        .btn { padding: 12px 24px; margin-top: 15px; background-color: #4CAF50; 
+               color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background-color: #45a049; }
+        .btn-secondary { background-color: #757575; margin-left: 10px; }
+        .btn-secondary:hover { background-color: #616161; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 농사일지 작성</h1>
+        <form th:action="@{/diary/add}" th:object="${farmDiaryDTO}" method="post">
+            <label>작성일:</label>
+            <input type="date" th:field="*{diaryDate}" required>
+            
+            <label>작물명:</label>
+            <input type="text" th:field="*{cropName}" placeholder="예: 토마토, 상추, 고추 등" required>
+            
+            <label>작업내용:</label>
+            <textarea th:field="*{workContent}" placeholder="오늘 한 작업을 입력하세요"></textarea>
+            
+            <label>날씨:</label>
+            <select th:field="*{weather}">
+                <option value="">선택하세요</option>
+                <option value="맑음">맑음</option>
+                <option value="흐림">흐림</option>
+                <option value="비">비</option>
+                <option value="눈">눈</option>
+                <option value="안개">안개</option>
+            </select>
+            
+            <label>온도(℃):</label>
+            <input type="number" th:field="*{temperature}" placeholder="예: 20">
+            
+            <label>습도(%):</label>
+            <input type="number" th:field="*{humidity}" min="0" max="100" placeholder="예: 60">
+            
+            <label>기타 메모:</label>
+            <textarea th:field="*{notes}" placeholder="추가로 기록하고 싶은 내용"></textarea>
+            
+            <button type="submit" class="btn">💾 저장</button>
+            <a th:href="@{/diary/list}" class="btn btn-secondary" style="text-decoration: none; display: inline-block;">목록으로</a>
+        </form>
+    </div>
+</body>
+</html>
+

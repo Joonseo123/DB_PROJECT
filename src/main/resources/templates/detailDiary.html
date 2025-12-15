@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>농사일지 상세</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; margin: 20px; background-color: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #2e7d32; margin-bottom: 20px; }
+        .detail-box { background-color: #f9f9f9; padding: 20px; border-radius: 5px; margin-bottom: 15px; }
+        .detail-label { font-weight: bold; color: #555; margin-bottom: 5px; }
+        .detail-value { color: #333; margin-bottom: 15px; padding: 8px; background-color: white; border-radius: 4px; }
+        .btn { padding: 10px 20px; margin: 5px; text-decoration: none; 
+               background-color: #4CAF50; color: white; border-radius: 4px; display: inline-block; }
+        .btn:hover { background-color: #45a049; }
+        .btn-danger { background-color: #f44336; }
+        .btn-danger:hover { background-color: #da190b; }
+        .btn-info { background-color: #2196F3; }
+        .btn-info:hover { background-color: #0b7dda; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📖 농사일지 상세</h1>
+        
+        <div th:if="${diaryDetail == null}" class="detail-box">
+            <p style="color: red;">일지를 찾을 수 없습니다.</p>
+            <a th:href="@{/diary/list}" class="btn btn-info">📋 목록으로</a>
+        </div>
+        
+        <div th:if="${diaryDetail != null}" class="detail-box">
+            <div class="detail-label">작성일</div>
+            <div class="detail-value" th:text="${diaryDetail.diaryDate}"></div>
+            
+            <div class="detail-label">작물명</div>
+            <div class="detail-value" th:text="${diaryDetail.cropName}"></div>
+            
+            <div class="detail-label">작업내용</div>
+            <div class="detail-value" th:text="${diaryDetail.workContent}"></div>
+            
+            <div class="detail-label">날씨</div>
+            <div class="detail-value" th:text="${diaryDetail.weather}"></div>
+            
+            <div class="detail-label">온도(℃)</div>
+            <div class="detail-value" th:text="${diaryDetail.temperature}"></div>
+            
+            <div class="detail-label">습도(%)</div>
+            <div class="detail-value" th:text="${diaryDetail.humidity}"></div>
+            
+            <div class="detail-label">기타 메모</div>
+            <div class="detail-value" th:text="${diaryDetail.notes}"></div>
+        </div>
+        
+        <div th:if="${diaryDetail != null}" style="margin-top: 20px;">
+            <a th:href="@{'/diary/update/' + ${diaryDetail.diaryId}}" class="btn">✏️ 수정</a>
+            <a th:href="@{'/diary/delete/' + ${diaryDetail.diaryId}}" class="btn btn-danger" 
+               onclick="return confirm('정말 삭제하시겠습니까?')">🗑️ 삭제</a>
+            <a th:href="@{/diary/list}" class="btn btn-info">📋 목록으로</a>
+        </div>
+    </div>
+</body>
+</html>

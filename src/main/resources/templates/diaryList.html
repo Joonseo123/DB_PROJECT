@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>농사일지 목록</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; margin: 20px; background-color: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #2e7d32; margin-bottom: 20px; }
+        .btn { padding: 10px 20px; margin: 5px; text-decoration: none; 
+               background-color: #4CAF50; color: white; border-radius: 4px; display: inline-block; }
+        .btn:hover { background-color: #45a049; }
+        .btn-danger { background-color: #f44336; }
+        .btn-danger:hover { background-color: #da190b; }
+        .btn-info { background-color: #2196F3; }
+        .btn-info:hover { background-color: #0b7dda; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        tr:hover { background-color: #e8f5e9; }
+        .empty { text-align: center; padding: 40px; color: #999; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌾 농사일지 목록</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <a th:href="@{/diary/add}" class="btn">➕ 일지 작성</a>
+            <form th:action="@{/diary/list}" method="get" style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" name="keyword" th:value="${keyword}" placeholder="작물명 또는 작업내용 검색" 
+                       style="padding: 10px; border: 1px solid #ddd; border-radius: 4px; width: 300px;">
+                <button type="submit" class="btn" style="margin: 0;">🔍 검색</button>
+                <a th:href="@{/diary/list}" class="btn" style="background-color: #757575; margin: 0;">전체보기</a>
+            </form>
+        </div>
+        
+        <div th:if="${keyword != null and !keyword.isEmpty()}" style="margin-bottom: 10px; color: #666;">
+            검색어: "<span th:text="${keyword}"></span>" 검색 결과: <span th:text="${diaryList != null ? diaryList.size() : 0}"></span>건
+        </div>
+        
+        <table th:if="${diaryList != null and !diaryList.empty}">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>작성일</th>
+                    <th>작물명</th>
+                    <th>작업내용</th>
+                    <th>날씨</th>
+                    <th>온도(℃)</th>
+                    <th>습도(%)</th>
+                    <th>관리</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="diary, iterStat : ${diaryList}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${diary.diaryDate}"></td>
+                    <td th:text="${diary.cropName}"></td>
+                    <td th:text="${diary.workContent}"></td>
+                    <td th:text="${diary.weather}"></td>
+                    <td th:text="${diary.temperature}"></td>
+                    <td th:text="${diary.humidity}"></td>
+                    <td>
+                        <a th:href="@{/diary/{id}(id=${diary.diaryId})}" class="btn btn-info">상세</a>
+                        <a th:href="@{/diary/update/{id}(id=${diary.diaryId})}" class="btn">수정</a>
+                        <a th:href="@{/diary/delete/{id}(id=${diary.diaryId})}" class="btn btn-danger" 
+                           onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="empty" th:if="${diaryList == null or diaryList.empty}">
+            등록된 일지가 없습니다. 일지를 작성해보세요!
+        </div>
+    </div>
+</body>
+</html>
+
